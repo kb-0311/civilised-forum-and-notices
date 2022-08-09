@@ -5,6 +5,7 @@ import {
   HomeIcon,
   SearchIcon,
   MenuIcon,
+  
 } from '@heroicons/react/solid'
 import {
   BellIcon,
@@ -14,6 +15,7 @@ import {
   SparklesIcon,
   SpeakerphoneIcon,
   VideoCameraIcon,
+  LoginIcon
 } from '@heroicons/react/outline'
 import Link from 'next/link'
 
@@ -23,7 +25,7 @@ function Header() {
       <div className="relative h-20 w-20">
         <Image
           objectFit="contain"
-          src="https://avatars.githubusercontent.com/u/96020697?v=4"
+          src="https://iiitp-civilised.netlify.app/static/media/logo.397abd6247433b189851.png"
           layout="fill"
         />
       </div>
@@ -37,7 +39,7 @@ function Header() {
         />
         <button type="submit" hidden />
       </form>
-      <div className="items-center mx-20 min-w-fit space-x-8 flex text-gray-500">
+      <div className="items-center mx-20 min-w-fit space-x-16 flex text-gray-500">
         <a>
           <VideoCameraIcon className="icon h-6 text-orange-500 hover:text-white transition-all duration-500" />
         </a>
@@ -45,6 +47,9 @@ function Header() {
           <ChatIcon className="icon h-6 text-orange-500 hover:text-white transition-all duration-500" />
         </a>
         <PlusIcon className="icon h-6 text-orange-500 hover:text-white transition-all duration-500" />
+        
+        <LoginIcon className="icon h-6 text-orange-500 hover:text-white transition-all duration-500" />
+
       </div>
       <div className="mx-5 flex items-center">
         <MenuIcon className="icon" />

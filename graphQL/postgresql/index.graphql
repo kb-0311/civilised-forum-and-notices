@@ -56,9 +56,6 @@ type Vote {
   username: String
 }
 
-"""
-These are some examples of queries generated from the schema. Feel free to modify them or add your own.
-"""
 type Query {
   getCommentList: [Comment]
     @dbquery(
@@ -158,9 +155,7 @@ type Query {
     )
 }
 
-"""
-These are some examples of mutations generated from the schema. Feel free to modify them or add your own.
-"""
+
 type Mutation {
   insertComment(
     post_id: ID!

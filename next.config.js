@@ -6,6 +6,7 @@ module.exports = {
     ,'iiitp-civilised.netlify.app'
     ,'links.papareact.com'
     ,'creazilla-store.fra1.digitaloceanspaces.com'
+    ,'avatars.dicebear.com'
   ]
   }
 }

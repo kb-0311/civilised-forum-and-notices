@@ -1,7 +1,11 @@
+import { useMutation } from '@apollo/client';
 import { LinkIcon, PhotographIcon } from '@heroicons/react/outline';
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import client from '../pages/api/apollo-client';
+import { ADD_POST, ADD_TOPIC } from '../Queries/mutations';
+import { GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
 import Avatar from './Avatar';
 
 type FormData = {
@@ -12,12 +16,15 @@ type FormData = {
 }
 
 type Props = {
-    subreddit?:string
+    topic?:string
 }
 
-function PostBox({subreddit} :Props) {
+function PostBox({topic} :Props) {
 
     const {data :session} =useSession();
+
+    const [ addPost ] =useMutation(ADD_POST);
+    const [ addTopic ] = useMutation(ADD_TOPIC);
 
     const [imageBoxOpen, setImageBoxOpen] = useState<boolean>(false)
 
@@ -29,8 +36,63 @@ function PostBox({subreddit} :Props) {
         formState: { errors },
       } = useForm<FormData>()
 
+    const onSubmit = handleSubmit(async ({postBody ,topic:postTopic ,postImage ,postTitle})=>{
+        console.log(postBody , postImage ,postTopic , postTitle);
+        
+        try {
+          //topic query
+
+          const { data : { getTopicListByString } } = await client.query({
+            query : GET_TOPIC_ON_CREATE_POST,
+            variables : {
+              topic: postTopic,
+            }
+          })
+
+          const topicExists:Boolean = getTopicListByString.length > 0
+
+          if (true) {
+            //create topic 
+            let numOfPostsHere:Number =1;
+            const { data : {insertTopic :newTopic} } = await addTopic({
+              variables : {
+                topic: postTopic,
+                numOfPosts : numOfPostsHere
+              }
+            })
+
+            const image = postImage || ''
+
+            const {
+              data: { insertPost: newPost },
+            } = await addPost({
+              variables: {
+                body: postBody,
+                media: image,
+                topic_id: newTopic.id,
+                title: postTitle,
+                username: session?.user?.name,
+              },
+            })
+            console.log(
+              newPost
+            )
+
+
+          } else {
+
+          }
+
+        } catch (error) {
+          console.log(error);
+          
+        }
+        
+    })
+
   return (
     <form 
+    onSubmit={onSubmit}
         className="sticky top-16  rounded-3xl border border-slate-900 bg-black p-8"
         >
         <div className="flex items-center space-x-3 mx-5">
@@ -42,9 +104,9 @@ function PostBox({subreddit} :Props) {
                 className='flex-1 rounded-lg w-1/3 min-w-fit bg-white p-2 pl-5 outline-none"'
                 placeholder={
                     session
-                    ? subreddit
-                        ? `Create a post in r/${subreddit}`
-                        : 'Create a post by entering a title'
+                    ? topic
+                        ? `Create a post in r/${topic}`
+                        : 'Start creating a post by entering a title'
                     : 'Sign in to post'
                 } />
             <PhotographIcon
@@ -71,12 +133,12 @@ function PostBox({subreddit} :Props) {
             />
           </div>
 
-          {!subreddit && (
+          {!topic && (
             <div className="flex items-center px-2">
-              <p className="min-w-[90px] text-white">Subreddit:</p>
+              <p className="min-w-[90px] text-white">topic:</p>
               <input
-                {...register('topic', { required: true })}
-                className="m-2 w-1/3 min-w-fit rounded-lg flex-1 bg-white p-2 outline-none"
+                {...register("topic" , {required:true , minLength:2})}
+                className="m-2 rounded-lg flex-1 bg-white p-2 outline-none"
                 type="text"
                 placeholder="i.e. reactjs"
               />
@@ -101,8 +163,12 @@ function PostBox({subreddit} :Props) {
                 <p>- A Post Title is required</p>
               )}
 
-              {errors.topic?.type === 'required' && (
-                <p>- A Topic is required</p>
+              {errors.topic?.type === "required" && (
+                <p>- A topic is required</p>
+              )}
+
+              {errors.topic?.type === "minLength" && (
+                <p>- Topic should consist of alteast 2 chars</p>
               )}
             </div>
           )}

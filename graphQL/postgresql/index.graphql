@@ -23,7 +23,6 @@ type Post {
       query: "getTopic"
       arguments: [{ name: "id", field: "topic_id" }]
     )
-  topicList: [Topic] @materializer(query: "getTopicUsingPosts_in_topic_id")
   topic_id: ID
   username: String
   voteList: [Vote] @materializer(query: "getVoteUsingPost_id")
@@ -32,14 +31,10 @@ type Post {
 type Topic {
   created_at: DateTime
   id: ID!
-  post: Post
-    @materializer(
-      query: "getPost"
-      arguments: [{ name: "id", field: "posts_in_topic_id" }]
-    )
+
   postList: [Post] @materializer(query: "getPostUsingTopic_id")
-  posts_in_topic_id: ID
-  topic: String
+  topic: String!
+  numOfPosts: Int
 }
 
 type Vote {
@@ -95,16 +90,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getTopicUsingPosts_in_topic_id(id: ID!): [Topic]
-    @dbquery(
-      type: "postgresql"
-      query: """
-      SELECT T."created_at", T."id", T."posts_in_topic_id", T."topic"
-        FROM "public"."topic" T
-        WHERE T."posts_in_topic_id" = $1
-      """
-      configuration: "postgresql_config"
-    )
+
   getVoteUsingPost_id(id: ID!): [Vote]
     @dbquery(
       type: "postgresql"
@@ -122,6 +108,15 @@ type Query {
       table: "topic"
       configuration: "postgresql_config"
     )
+  getTopicListByString (topic:String!): [Topic]
+  @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+        select * from "topic" where topic=$1
+      """
+      configuration: "postgresql_config"
+  )
   getTopic(id: ID!): Topic
     @dbquery(
       type: "postgresql"
@@ -179,7 +174,6 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertPost(
-    created_at: DateTime!
     body: String!
     topic_id: ID!
     media: String!
@@ -201,10 +195,9 @@ type Mutation {
       dml: DELETE
       configuration: "postgresql_config"
     )
-  insertTopic(
-    created_at: DateTime!
+  insertTopic (
     topic: String!
-    posts_in_topic_id: ID!
+    numOfPosts: Int!
   ): Topic
     @dbquery(
       type: "postgresql"

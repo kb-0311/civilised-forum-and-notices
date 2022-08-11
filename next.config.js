@@ -11,6 +11,6 @@ module.exports = {
   },
   env: {
     GRAPHQL_STEPZEN_KEY: process.env.GRAPHQL_STEPZEN_KEY,
-    GRAPHQL_STEPZEN_URI: process.env.GRAPHQL_STEPZEN_URI
+    GRAPHQL_STEPZEN_URI: process.env.GRAPHQL_STEPZEN_URI,
   }
 }

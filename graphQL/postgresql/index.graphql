@@ -113,7 +113,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-        select * from "topic" where topic=$1
+        select * from "topic" where topic=TRIM($1)
       """
       configuration: "postgresql_config"
   )

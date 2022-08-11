@@ -37,8 +37,12 @@ function PostBox({topic} :Props) {
       } = useForm<FormData>()
 
     const onSubmit = handleSubmit(async ({postBody ,topic:postTopic ,postImage ,postTitle})=>{
-        console.log(postBody , postImage ,postTopic , postTitle);
-        
+        console.log(postBody , postTopic , postTitle);
+        const image = postImage || ''
+        postTopic = postTopic.trim();
+        postTitle=postTitle.trim();
+        console.log(postTopic);
+        console.log(postTitle);
         try {
           //topic query
 
@@ -50,8 +54,9 @@ function PostBox({topic} :Props) {
           })
 
           const topicExists:Boolean = getTopicListByString.length > 0
-
-          if (true) {
+          console.log(getTopicListByString);
+          
+          if (!topicExists) {
             //create topic 
             let numOfPostsHere:Number =1;
             const { data : {insertTopic :newTopic} } = await addTopic({
@@ -61,7 +66,6 @@ function PostBox({topic} :Props) {
               }
             })
 
-            const image = postImage || ''
 
             const {
               data: { insertPost: newPost },
@@ -80,7 +84,19 @@ function PostBox({topic} :Props) {
 
 
           } else {
+            //if topic does not exist
 
+            const {
+              data: { insertPost: newPost },
+            } = await addPost({
+              variables: {
+                body: postBody,
+                media: image,
+                topic_id: getTopicListByString[0].id,
+                title: postTitle,
+                username: session?.user?.name,
+              },
+            })
           }
 
         } catch (error) {

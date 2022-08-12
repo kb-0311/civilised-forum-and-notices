@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+.voteButtons {
+    @apply h-6 w-6 rounded-md p-1 hover:bg-gray-200;
+  }
+
+  .postButtons {
+    @apply flex cursor-pointer items-center space-x-1 rounded-sm p-2 text-sm font-semibold hover:bg-gray-100;
+  }
+}

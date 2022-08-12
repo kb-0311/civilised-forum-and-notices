@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React, { useEffect } from 'react'
 import client from '../pages/api/apollo-client'
-import { GET_ALL_POSTS } from '../Queries/queries'
+import { GET_ALL_POSTS, GET_ALL_POSTS_IN_A_TOPIC } from '../Queries/queries'
 import { Jelly } from '@uiball/loaders'
 
 import Post from './Post'
@@ -10,14 +10,15 @@ type Props = {
   topic?: string
 }
 
-function Feed () {
+function Feed ({topic} :Props) {
 
-  const { data , error ,loading } =  useQuery(GET_ALL_POSTS);
+  const { data , error ,loading } = !topic?  useQuery(GET_ALL_POSTS) :useQuery(GET_ALL_POSTS_IN_A_TOPIC , {variables : {
+    topic:topic
+  }}) ;
 
  
-  console.log(data);
   
-  const posts:Posts[]=  data?.getPostList
+  const posts:Posts[]=  !topic ? data?.getPostList : data?.getPostListByTopic
 
 
   
@@ -28,16 +29,18 @@ function Feed () {
   //   })
 
   if(loading) return (
+    <div className='flex justify-center items-center my-14'>
     <Jelly 
     size={80}
-    speed={0.9} 
+    speed={0.4} 
     color="black" 
    />
+   </div>
   )
 
 
   return (
-    <div className="mt-5 space-y-4">
+    <div className="mt-20 space-y-12">
     {posts?.map((post) => (
       <Post key={post.id} post={post} />
     ))}

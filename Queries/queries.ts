@@ -44,3 +44,32 @@ export const GET_ALL_POSTS = gql`
     }
   }
 `
+
+export const GET_ALL_POSTS_IN_A_TOPIC = gql`
+  query MyQuery ( 
+    $topic :String!
+    )  {
+    getPostListByTopic(topic: $topic) {
+      body
+      id
+      created_at
+      media
+      title
+      topic_id
+      username
+      commentList {
+        created_at
+        id
+        post_id
+        text
+        username
+      }
+      topic {
+        created_at
+        numOfPosts
+        topic
+        id
+      }
+    }
+  }
+`;

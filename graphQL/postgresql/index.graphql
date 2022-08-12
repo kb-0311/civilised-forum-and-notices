@@ -70,7 +70,21 @@ type Query {
     @dbquery(
       type: "postgresql"
       schema: "public"
-      table: "post"
+      query: """
+        select * from "post"
+        order by "post"."created_at" desc
+      """
+      configuration: "postgresql_config"
+    )
+  getPostListByTopic(topic: String!): [Post]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select *, "post".id as id from "post"
+      join "topic" on "topic"."id" = "post"."topic_id"
+      where "topic"."topic"= $1
+      order by "post"."created_at" desc
+      """
       configuration: "postgresql_config"
     )
   getPost(id: ID!): Post

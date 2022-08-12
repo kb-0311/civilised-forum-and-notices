@@ -30,5 +30,5 @@ type Vote = {
     username: string
     voteList: Vote[]
     commentList: postComment[]
-    topic: Topic[]
+    topic: Topic
   }

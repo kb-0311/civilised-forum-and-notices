@@ -7,7 +7,7 @@ import client from '../pages/api/apollo-client';
 import { ADD_POST, ADD_TOPIC } from '../Queries/mutations';
 import Avatar from './Avatar';
 import {toast} from 'react-hot-toast';
-import { GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
+import { GET_ALL_POSTS, GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
 
 type FormData = {
     postTitle: string
@@ -57,7 +57,7 @@ function PostBox({topic} :Props) {
           const { data : { getTopicListByString } } = await client.query({
             query : GET_TOPIC_ON_CREATE_POST,
             variables : {
-              topic: postTopic,
+              topic: topic ||postTopic,
             },
           })
           
@@ -92,6 +92,8 @@ function PostBox({topic} :Props) {
                 title: postTitle,
                 username: session?.user?.name,
               },
+              refetchQueries: [{query:GET_ALL_POSTS}],
+              awaitRefetchQueries:true
 
             })
             console.log(
@@ -142,7 +144,7 @@ function PostBox({topic} :Props) {
   return (
     <form 
     onSubmit={onSubmit}
-        className="sticky top-16  rounded-3xl border border-slate-900 bg-black p-8"
+        className="sticky top-16 z-10 rounded-3xl border border-slate-900 bg-black p-8"
         >
         <div className="flex items-center space-x-3 mx-5">
             <Avatar/>

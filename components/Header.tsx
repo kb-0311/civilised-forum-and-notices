@@ -28,12 +28,14 @@ function Header() {
 
   return (
     <div className="max-w-full sticky top-0 z-50 flex min-w-fit items-center bg-black px-1 py-2 border-blue-500">
-      <div className="relative h-20 w-20">
+      <div className="relative h-20 w-20 cursor-pointer">
+        <Link href={'/'}>
         <Image
           objectFit="contain"
           src="https://iiitp-civilised.netlify.app/static/media/logo.397abd6247433b189851.png"
           layout="fill"
         />
+        </Link>
       </div>
 
       <form className="flex flex-1 w-1/3 min-w-fit items-center space-x-2 mx-2 rounded-sm border border-gray-200 bg-gray-100 px-3 py-1">

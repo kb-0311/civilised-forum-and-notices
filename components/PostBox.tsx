@@ -114,7 +114,8 @@ function PostBox({topic} :Props) {
                 title: postTitle,
                 username: session?.user?.name,
               },
-
+              refetchQueries: [{query:GET_ALL_POSTS}],
+              awaitRefetchQueries:true
             })
             console.log(newPost);
             

@@ -43,7 +43,7 @@ function Header() {
         <input
           className="flex-1 w-6 bg-transparent outline-none"
           type="text"
-          placeholder="Search Forum"
+          placeholder="Searching to be done"
         />
         <button type="submit" hidden />
       </form>

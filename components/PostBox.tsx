@@ -1,12 +1,13 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LinkIcon, PhotographIcon } from '@heroicons/react/outline';
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import client from '../pages/api/apollo-client';
 import { ADD_POST, ADD_TOPIC } from '../Queries/mutations';
-import { GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
 import Avatar from './Avatar';
+import {toast} from 'react-hot-toast';
+import { GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
 
 type FormData = {
     postTitle: string
@@ -24,7 +25,7 @@ function PostBox({topic} :Props) {
     const {data :session} =useSession();
 
     const [ addPost ] =useMutation(ADD_POST);
-    const [ addTopic ] = useMutation(ADD_TOPIC);
+    const [ addTopic ] = useMutation(ADD_TOPIC );
 
     const [imageBoxOpen, setImageBoxOpen] = useState<boolean>(false)
 
@@ -35,26 +36,34 @@ function PostBox({topic} :Props) {
         watch,
         formState: { errors },
       } = useForm<FormData>()
+    
+
 
     const onSubmit = handleSubmit(async ({postBody ,topic:postTopic ,postImage ,postTitle})=>{
-        console.log(postBody , postTopic , postTitle);
+      console.log(postTopic);
+
         const image = postImage || ''
         postTopic = postTopic.trim();
         postTitle=postTitle.trim();
+        
         console.log(postTopic);
-        console.log(postTitle);
+        
+        const notification = toast.loading('Creating new post...');
+
         try {
           //topic query
-
+          
+       
           const { data : { getTopicListByString } } = await client.query({
             query : GET_TOPIC_ON_CREATE_POST,
             variables : {
               topic: postTopic,
-            }
+            },
           })
-
-          const topicExists:Boolean = getTopicListByString.length > 0
+          
           console.log(getTopicListByString);
+          
+          const topicExists:Boolean = getTopicListByString.length > 0
           
           if (!topicExists) {
             //create topic 
@@ -63,8 +72,14 @@ function PostBox({topic} :Props) {
               variables : {
                 topic: postTopic,
                 numOfPosts : numOfPostsHere
-              }
+              } ,
+              refetchQueries: [{query:GET_TOPIC_ON_CREATE_POST , variables : {topic:"react"} } ,],
+              
+              awaitRefetchQueries: true,
+              
             })
+
+            
 
 
             const {
@@ -77,6 +92,7 @@ function PostBox({topic} :Props) {
                 title: postTitle,
                 username: session?.user?.name,
               },
+
             })
             console.log(
               newPost
@@ -96,12 +112,29 @@ function PostBox({topic} :Props) {
                 title: postTitle,
                 username: session?.user?.name,
               },
+
             })
+            console.log(newPost);
+            
+           
+            
           }
+
+
+
+          setValue('postTitle' ,'');
+          toast.success(`New post created inside ${postTopic} topic`, {
+            id: notification,
+            duration: 4000,
+          })
+
 
         } catch (error) {
           console.log(error);
-          
+          toast.error(`uh oh ! ${error} `, {
+            id: notification,
+            duration: 4000,
+          })
         }
         
     })

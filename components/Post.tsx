@@ -15,7 +15,6 @@ function Post({ post ,created_at }: Props) {
   
     const [vote, setVote] = useState<boolean>()
     const { data: session } = useSession();
-  console.log(post);
   
   return (
     <Link href={`/post/${post?.id}`}>

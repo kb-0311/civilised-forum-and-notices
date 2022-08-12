@@ -169,7 +169,6 @@ type Mutation {
   insertComment(
     post_id: ID!
     text: String!
-    created_at: DateTime!
     username: String!
   ): Comment
     @dbquery(

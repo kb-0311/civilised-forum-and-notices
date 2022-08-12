@@ -19,7 +19,7 @@ function Feed ({topic} :Props) {
  
   
   const posts:Posts[]=  !topic ? data?.getPostList : data?.getPostListByTopic
-
+  
 
   
   // : useQuery(GET_ALL_POSTS_BY_TOPIC, {
@@ -42,7 +42,7 @@ function Feed ({topic} :Props) {
   return (
     <div className="mt-20 space-y-12">
     {posts?.map((post) => (
-      <Post key={post.id} post={post} created_at={post?.created_at} />
+      <Post key={post.id} post={post} created_at={post && post.created_at} />
     ))}
   </div>
   )

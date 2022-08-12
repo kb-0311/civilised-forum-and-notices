@@ -36,10 +36,9 @@ function PostPage() {
 
     
     const post: Posts = data?.getPost;
-
+      
     const onSubmit: SubmitHandler<FormData> = async ({comment}) => {
         const notification = toast.loading('Posting your comment...')
-        console.log(comment);
         await addComment({
             variables: {
               post_id: router.query.postId,

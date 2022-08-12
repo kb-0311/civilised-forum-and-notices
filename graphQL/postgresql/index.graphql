@@ -155,6 +155,16 @@ type Query {
       table: "vote"
       configuration: "postgresql_config"
     )
+    getVotesByPostId(post_id: ID!): [Vote]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      select * from "vote" where "post_id"= $1
+      order by "created_at" desc
+      """
+      configuration: "postgresql_config"
+    )
   getVote(id: ID!): Vote
     @dbquery(
       type: "postgresql"
@@ -229,9 +239,7 @@ type Mutation {
     )
   insertVote(
     post_id: ID!
-    created_at: DateTime!
     upvote: Boolean!
-    downvote: Boolean!
     username: String!
   ): Vote
     @dbquery(

@@ -157,7 +157,7 @@ function PostBox({topic} :Props) {
                 placeholder={
                     session
                     ? topic
-                        ? `Create a post in r/${topic}`
+                        ? `Create a post in ${topic} topic`
                         : 'Start creating a post by entering a title'
                     : 'Sign in to post'
                 } />

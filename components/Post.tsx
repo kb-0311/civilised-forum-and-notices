@@ -86,12 +86,12 @@ function Post({ post ,created_at }: Props) {
             }`}
           />
           <p className="text-xs font-bold text-white">{displayVotes(data)}</p>
-          <ArrowDownIcon
+          {/* <ArrowDownIcon
             onClick={()=>upVote(false)}
             className={`voteButtons  text-white hover:text-red-300 hover:bg-black ${
               vote === false && 'text-blue-400'
             }`}
-          />
+          /> */}
       </div>
       <Link href={`/post/${post?.id}`}>
 

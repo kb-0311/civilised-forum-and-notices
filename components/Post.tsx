@@ -8,13 +8,17 @@ import TimeAgo from 'react-timeago'
 
 type Props = {
     post: Posts
+    created_at:string
   }
 
-function Post({ post }: Props) {
+function Post({ post ,created_at }: Props) {
   
     const [vote, setVote] = useState<boolean>()
-    const { data: session } = useSession()
+    const { data: session } = useSession();
+  console.log(post);
+  
   return (
+    <Link href={`/post/${post?.id}`}>
     <div className="flex cursor-pointer rounded-md  shadowshadow-lg border border-red-500 bg-white hover:border hover:border-gray-600">
       <div className="flex flex-col items-center justify-start space-y-1 rounded-l-md bg-slate-900 p-4 text-gray-400">
           <ArrowUpIcon
@@ -36,24 +40,24 @@ function Post({ post }: Props) {
       <div className="p-3 pb-1">
               {/* topic */}
           <div className="flex items-center space-x-2">
-            <Avatar seed={post.username} />
+            <Avatar seed={post?.username} />
             <p className="text-xs text-slate-900">
-              <Link href={`/topic/${post.topic.topic}`}>
+              <Link href={`/topic/${post?.topic?.topic}`}>
                 <span className="font-bold text-lg text-black hover:text-blue-400 hover:underline">
-                  {post.topic.topic}
+                  {post?.topic?.topic}
                 </span>
               </Link>{' '}
-              -- {post.username} <TimeAgo date={post.created_at} />
+              -- {post?.username} <TimeAgo date={created_at} />
             </p>
           </div>
 
           <div className="py-4 ">
-              <h2 className="text-xl font-semibold">{post.title}</h2>
-              <p className="mt-2 text-sm font-light">{post.body}</p>
+              <h2 className="text-xl font-semibold">{post?.title}</h2>
+              <p className="mt-2 text-sm font-light">{post?.body}</p>
           </div>
             {
-              post.media? (
-                <img className="w-full" src={post.media} alt="" />
+              post?.media? (
+                <img className="w-full" src={post?.media} alt="" />
 
               ) : (
                 null
@@ -63,7 +67,7 @@ function Post({ post }: Props) {
             <div className="postButtons">
               <ChatAltIcon className="h-6 w-6" />
               <p className="hidden sm:inline">
-                {post.commentList.length} Comments
+                {post?.commentList?.length} Comments
               </p>
             </div>
             {/* <div className="postButtons">
@@ -91,6 +95,7 @@ function Post({ post }: Props) {
 
 
     </div>
+    </Link>
   )
 }
 

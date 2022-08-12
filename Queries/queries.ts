@@ -73,3 +73,32 @@ export const GET_ALL_POSTS_IN_A_TOPIC = gql`
     }
   }
 `;
+
+export const GET_POST= gql`
+  query MyQuery ( 
+    $id :ID!
+    )  {
+    getPost(id: $id) {
+      body
+      id
+      created_at
+      media
+      title
+      topic_id
+      username
+      commentList {
+        created_at
+        id
+        post_id
+        text
+        username
+      }
+      topic {
+        created_at
+        numOfPosts
+        topic
+        id
+      }
+    }
+  }
+`;

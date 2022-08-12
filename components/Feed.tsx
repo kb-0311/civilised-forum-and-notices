@@ -42,7 +42,7 @@ function Feed ({topic} :Props) {
   return (
     <div className="mt-20 space-y-12">
     {posts?.map((post) => (
-      <Post key={post.id} post={post} />
+      <Post key={post.id} post={post} created_at={post?.created_at} />
     ))}
   </div>
   )

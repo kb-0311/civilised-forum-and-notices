@@ -54,7 +54,9 @@ function Header() {
         <a href="https://iiitp-civilised.netlify.app/">
           <ChatIcon className="icon md:h-4 lg:h-6 h-2 text-orange-500 hover:text-white transition-all duration-500" />
         </a>
-        <PlusIcon className="icon md:h-4 lg:h-6  h-2 text-orange-500 hover:text-white transition-all duration-500" />
+        <a href="https://civilised-social-web-app.herokuapp.com/welcome">
+          <PlusIcon className="icon md:h-4 lg:h-6  h-2 text-orange-500 hover:text-white transition-all duration-500" />
+        </a>
         {session ? (
           <Fragment>
           <div

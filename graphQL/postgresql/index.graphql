@@ -131,6 +131,15 @@ type Query {
       """
       configuration: "postgresql_config"
   )
+  getTopicWithLimit(limit: Int!): [Topic]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "topic" order by random()
+      limit $1
+      """
+      configuration: "postgresql_config"
+    )
   getTopic(id: ID!): Topic
     @dbquery(
       type: "postgresql"

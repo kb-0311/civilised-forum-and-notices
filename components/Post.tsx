@@ -26,7 +26,6 @@ function Post({ post ,created_at }: Props) {
     })
     const [addVote] = useMutation(ADD_VOTE);
     
-    console.log(post);
     
     
     const upVote = async (isUpvote: boolean) => {
@@ -51,7 +50,6 @@ function Post({ post ,created_at }: Props) {
         refetchQueries : [{query : GET_ALL_VOTES_BY_POST_ID , variables :{post_id :post.id}}],
         awaitRefetchQueries:true
       })
-      console.log(newVote);
       
 
       toast.success(`Added Vote Succesfully ` , {

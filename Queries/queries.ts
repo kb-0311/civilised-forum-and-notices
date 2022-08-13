@@ -121,3 +121,15 @@ export const GET_ALL_VOTES_BY_POST_ID = gql`
     }
   }
 `;
+
+export const GET_TOPICS_WITH_A_LIMIT = gql`
+  query MyQuery (
+    $limit:Int!
+  )  {
+    getTopicWithLimit(limit: $limit) {
+      id
+      topic
+      created_at
+    }
+  }
+`;

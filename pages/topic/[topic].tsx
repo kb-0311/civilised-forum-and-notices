@@ -10,7 +10,7 @@ function Topic() {
         query: { topic },
       } = useRouter()
 
-      let topicRen:string = topic as string
+      let topicRen:string = topic as string ||"idk"
       console.log(topicRen);
       
   return (

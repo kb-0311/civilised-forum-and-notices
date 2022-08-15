@@ -167,12 +167,11 @@ function Post({ post ,created_at }: Props) {
 
 
             {/* footer */}
-      <div>
-
-      </div>
 
 
-    </div>
+
+    </div>      
+
   )
 }
 

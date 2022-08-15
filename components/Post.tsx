@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowUpIcon, ChatAltIcon, ShareIcon } from '@heroicons/react/outline'
+import { ArrowDownIcon, ArrowUpIcon, ChatAltIcon, ExclamationCircleIcon, ShareIcon } from '@heroicons/react/outline'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -19,12 +19,13 @@ function Post({ post ,created_at }: Props) {
   
     const [vote, setVote] = useState<boolean>()
     const { data: session } = useSession();
-    const { data, loading } = useQuery(GET_ALL_VOTES_BY_POST_ID, {
+    const { data:allVotes, loading } = useQuery(GET_ALL_VOTES_BY_POST_ID, {
       variables: {
         post_id: post?.id,
       },
     })
     const [addVote] = useMutation(ADD_VOTE);
+    console.log(allVotes?.getVotesByPostId);
     
     
     
@@ -38,7 +39,25 @@ function Post({ post ,created_at }: Props) {
   
       if (vote && isUpvote) return
       if (vote == false && !isUpvote) return
-  
+      
+      let voted:Boolean = false
+      allVotes?.getVotesByPostId.forEach((vote:Vote)=>{
+        if (session?.user?.name===vote.username) {
+          voted=true;
+        }
+      })
+      if (voted) {
+        toast.success(`You can vote only once on a post ` , {
+          id:notification,
+          icon: '✋',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        })
+        return;
+      }
       const {
         data: { insertVote: newVote },
       } = await addVote({
@@ -83,7 +102,7 @@ function Post({ post ,created_at }: Props) {
               vote && 'text-red-400'
             }`}
           />
-          <p className="text-xs font-bold text-white">{displayVotes(data)}</p>
+          <p className="text-xs font-bold text-white">{displayVotes(allVotes)}</p>
           {/* <ArrowDownIcon
             onClick={()=>upVote(false)}
             className={`voteButtons  text-white hover:text-red-300 hover:bg-black ${

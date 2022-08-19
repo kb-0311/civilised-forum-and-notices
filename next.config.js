@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const withTM = require('next-transpile-modules');
+withTM(['@jitsi/react-sdk'])
+module.exports =  {
   reactStrictMode: true,
   images:{
     domains:['avatars.githubusercontent.com' 
@@ -12,5 +14,5 @@ module.exports = {
   env: {
     GRAPHQL_STEPZEN_KEY: process.env.GRAPHQL_STEPZEN_KEY,
     GRAPHQL_STEPZEN_URI: process.env.GRAPHQL_STEPZEN_URI,
-  }
-}
+  },
+} , withTM({}) ;

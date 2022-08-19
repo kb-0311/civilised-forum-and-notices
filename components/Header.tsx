@@ -49,7 +49,9 @@ function Header() {
       </form>
       <div className="items-center md:inline-flex sm:inline:flex sm:mx-3 space-x-3  sm:space-x-3  md:mx-10 mx-3 min-w-fit lg:space-x-16 flex text-gray-500 lg:inline-flex">
         <a>
+          <Link href={'/call'}>
           <VideoCameraIcon className="icon md:h-4 lg:h-6 h-2 text-orange-500 hover:text-white transition-all duration-500" />
+          </Link>
         </a>
         <a href="https://iiitp-civilised.netlify.app/">
           <ChatIcon className="icon md:h-4 lg:h-6 h-2 text-orange-500 hover:text-white transition-all duration-500" />

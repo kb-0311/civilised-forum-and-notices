@@ -7,7 +7,7 @@ import client from '../pages/api/apollo-client';
 import { ADD_POST, ADD_TOPIC } from '../Queries/mutations';
 import Avatar from './Avatar';
 import {toast} from 'react-hot-toast';
-import { GET_ALL_POSTS, GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
+import { GET_ALL_POSTS, GET_ALL_POSTS_IN_A_TOPIC, GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
 
 type FormData = {
     postTitle: string
@@ -73,7 +73,7 @@ function PostBox({topic} :Props) {
                 topic: postTopic,
                 numOfPosts : numOfPostsHere
               } ,
-              refetchQueries: [{query:GET_TOPIC_ON_CREATE_POST , variables : {topic:"react"} } ,],
+              refetchQueries: [{query:GET_TOPIC_ON_CREATE_POST , variables : {topic:postTopic} } ,],
               
               awaitRefetchQueries: true,
               
@@ -114,7 +114,7 @@ function PostBox({topic} :Props) {
                 title: postTitle,
                 username: session?.user?.name,
               },
-              refetchQueries: [{query:GET_ALL_POSTS}],
+              refetchQueries: [{query:GET_ALL_POSTS} , {query:GET_ALL_POSTS_IN_A_TOPIC ,variables:{topic:postTopic}}],
               awaitRefetchQueries:true
             })
             console.log(newPost);

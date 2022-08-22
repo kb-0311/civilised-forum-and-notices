@@ -30,7 +30,7 @@ function Topic() {
     </div>
 
     <div className="mx-auto mt-5 max-w-5xl pb-10">
-      <PostBox topic={topic as string} />
+      <PostBox GlobalTopic={topic as string} />
       <Feed topic={topic as string} />
     </div>
   </div>

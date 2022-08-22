@@ -8,6 +8,7 @@ import { ADD_POST, ADD_TOPIC } from '../Queries/mutations';
 import Avatar from './Avatar';
 import {toast} from 'react-hot-toast';
 import { GET_ALL_POSTS, GET_ALL_POSTS_IN_A_TOPIC, GET_TOPIC_ON_CREATE_POST } from '../Queries/queries';
+import { log } from 'console';
 
 type FormData = {
     postTitle: string
@@ -17,11 +18,11 @@ type FormData = {
 }
 
 type Props = {
-    topic?:string
+    GlobalTopic?:string
 }
 
-function PostBox({topic} :Props) {
-
+function PostBox({GlobalTopic} :Props) {
+  
     const {data :session} =useSession();
 
     const [ addPost ] =useMutation(ADD_POST);
@@ -40,10 +41,15 @@ function PostBox({topic} :Props) {
 
 
     const onSubmit = handleSubmit(async ({postBody ,topic:postTopic ,postImage ,postTitle})=>{
-      console.log(postTopic);
 
         const image = postImage || ''
+        if (postTopic) {
         postTopic = postTopic.trim();
+          
+        } else {
+          console.log(GlobalTopic);
+          
+        }
         postTitle=postTitle.trim();
         
         console.log(postTopic);
@@ -57,11 +63,10 @@ function PostBox({topic} :Props) {
           const { data : { getTopicListByString } } = await client.query({
             query : GET_TOPIC_ON_CREATE_POST,
             variables : {
-              topic: topic ||postTopic,
+              topic: GlobalTopic?.trim() ||postTopic,
             },
           })
           
-          console.log(getTopicListByString);
           
           const topicExists:Boolean = getTopicListByString.length > 0
           
@@ -156,8 +161,8 @@ function PostBox({topic} :Props) {
                 className='flex-1 rounded-lg w-1/3 min-w-fit bg-white p-2 pl-5 outline-none"'
                 placeholder={
                     session
-                    ? topic
-                        ? `Create a post in ${topic} topic`
+                    ? GlobalTopic
+                        ? `Create a post in ${GlobalTopic} topic`
                         : 'Start creating a post by entering a title'
                     : 'Sign in to post'
                 } />
@@ -185,7 +190,7 @@ function PostBox({topic} :Props) {
             />
           </div>
 
-          {!topic && (
+          {!GlobalTopic && (
             <div className="flex items-center px-2">
               <p className="min-w-[90px] text-white">topic:</p>
               <input

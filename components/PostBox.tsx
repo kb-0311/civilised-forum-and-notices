@@ -138,7 +138,6 @@ function PostBox({GlobalTopic} :Props) {
 
 
         } catch (error) {
-          console.log(error);
           toast.error(`uh oh ! ${error} `, {
             id: notification,
             duration: 4000,

@@ -133,3 +133,17 @@ export const GET_TOPICS_WITH_A_LIMIT = gql`
     }
   }
 `;
+
+export const GET_COMMENTS_BY_POST_ID = gql`
+  query MyQuery (
+    $postId: ID!,
+  ) {
+    getCommentUsingPost_id(id: $postId) {
+        created_at
+        id
+        post_id
+        text
+        username
+    }
+  }
+`

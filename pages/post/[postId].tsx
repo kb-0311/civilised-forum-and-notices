@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import CommentList from '../../components/CommentList';
+import Comment from '../../components/Comment';
 import Post from '../../components/Post';
 import { ADD_COMMENT } from '../../Queries/mutations';
 import { GET_POST } from '../../Queries/queries';
@@ -29,7 +29,12 @@ function PostPage() {
         variables: {
           id: router.query.postId,
         },
-      })
+    })
+    // const { data:commentData  ,loading:commentLoading ,error:commentError  } = useQuery(GET_COMMENTS_BY_POST_ID, {
+    //   variables: {
+    //     postId: router.query.postId,
+    //   },
+    // })
     
     const [addComment] = useMutation(ADD_COMMENT);
 
@@ -104,7 +109,7 @@ function PostPage() {
         <div className="-my-5 rounded-b-md border border-t-0 border-gray-300 bg-white py-5 px-10">
         {/* <hr className="py-2" /> */}
         {post?.commentList.map((comment) => (
-          <CommentList comment={comment}/> 
+          <Comment comment={comment}/> 
         ))}
       </div>
         </div>

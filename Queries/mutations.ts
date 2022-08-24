@@ -74,3 +74,14 @@ export const ADD_VOTE = gql`
     }
   }
 `;
+
+export const DELETE_COMMENT = gql `
+  mutation DeleteComment (
+    $commentId: ID!
+  ) {
+    deleteComment(id: $commentId) {
+      text
+      username
+    } 
+  }
+`

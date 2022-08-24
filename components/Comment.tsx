@@ -26,6 +26,9 @@ function Comment({comment}:Props) {
        
 
         await deleteComment ({
+          variables:{
+            commentId:commentId,
+          } ,
           refetchQueries:[{query:GET_POST ,variables: {
             id: comment?.post_id,
           },}],

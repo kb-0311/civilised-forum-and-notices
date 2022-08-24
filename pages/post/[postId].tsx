@@ -5,8 +5,6 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import ReactTimeago from 'react-timeago';
-import Avatar from '../../components/Avatar';
 import CommentList from '../../components/CommentList';
 import Post from '../../components/Post';
 import { ADD_COMMENT } from '../../Queries/mutations';

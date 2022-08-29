@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { LinkIcon, PhotographIcon } from '@heroicons/react/outline';
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import client from '../pages/api/apollo-client';
@@ -151,7 +151,10 @@ function PostBox({GlobalTopic} :Props) {
     onSubmit={onSubmit}
         className="sticky top-16 z-10 rounded-3xl border border-slate-900 bg-black p-8"
         >
-        <div className="flex items-center space-x-3 mx-5">
+        <div onClick={()=>{
+          session?.user? null :signIn()
+        }}
+           className="flex items-center space-x-3 mx-5">
             <Avatar/>
             <input
                 {...register('postTitle' , {required:true})}

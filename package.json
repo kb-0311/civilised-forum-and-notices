@@ -7,8 +7,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@heroicons/react": "^1.0.6",
     "@jitsi/react-sdk": "^1.0.2",
+    "@mui/material": "^5.10.4",
     "@uiball/loaders": "^1.2.6",
     "graphql": "^16.5.0",
     "graphql-config": "^4.3.3",
@@ -17,6 +20,7 @@
     "next-transpile-modules": "^9.0.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-draggable": "^4.4.5",
     "react-hook-form": "^7.34.0",
     "react-hot-toast": "^2.3.0",
     "react-timeago": "^7.1.0"

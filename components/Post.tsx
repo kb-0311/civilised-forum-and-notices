@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowUpIcon, ChatAltIcon, ExclamationCircleIcon, ShareIcon } from '@heroicons/react/outline'
+import { ArrowDownIcon, ArrowUpIcon, ChatAltIcon, ExclamationCircleIcon, QuestionMarkCircleIcon, ShareIcon } from '@heroicons/react/outline'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -8,16 +8,35 @@ import toast from 'react-hot-toast'
 import { useMutation, useQuery } from '@apollo/client'
 import { ADD_VOTE } from '../Queries/mutations'
 import { GET_ALL_VOTES_BY_POST_ID } from '../Queries/queries'
-
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, PaperProps } from '@mui/material'
+import Draggable from 'react-draggable';
+import User from './User'
 
 type Props = {
     post: Posts
     created_at:string
-  }
+}
+
+type VoterName = {
+  username : string
+}
+
+function PaperComponent(props: PaperProps) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
 
 function Post({ post ,created_at }: Props) {
   
     const [vote, setVote] = useState<boolean>()
+    const [voters , setVoters] = useState<VoterName[]>();
+    const [toggleDialogBox , setToggleDialogBox]=useState<boolean>(false)
     const { data: session } = useSession();
     const { data:allVotes, loading } = useQuery(GET_ALL_VOTES_BY_POST_ID, {
       variables: {
@@ -25,7 +44,6 @@ function Post({ post ,created_at }: Props) {
       },
     })
     const [addVote] = useMutation(ADD_VOTE);
-    console.log(allVotes?.getVotesByPostId);
     
     
     
@@ -76,6 +94,18 @@ function Post({ post ,created_at }: Props) {
       })
 
     }
+
+    const displayVoters = (data:any) =>{
+      const voters : Vote[] = data?.getVotesByPostId;
+      let voterName:VoterName[] =[];
+      voters.forEach((voter)=>{
+        voterName.push({username :voter.username});
+      })
+      setVoters(voterName);
+      setToggleDialogBox(!toggleDialogBox);
+
+      
+    }
   
     const displayVotes = (data: any) => {
       const votes: Vote[] = data?.getVotesByPostId
@@ -103,12 +133,12 @@ function Post({ post ,created_at }: Props) {
             }`}
           />
           <p className="text-xs font-bold text-white">{displayVotes(allVotes)}</p>
-          {/* <ArrowDownIcon
-            onClick={()=>upVote(false)}
+          <QuestionMarkCircleIcon
+            onClick={()=>displayVoters(allVotes)}
             className={`voteButtons  text-white hover:text-red-300 hover:bg-black ${
               vote === false && 'text-blue-400'
             }`}
-          /> */}
+          />
       </div>
       <Link href={`/post/${post?.id}`}>
 
@@ -161,12 +191,36 @@ function Post({ post ,created_at }: Props) {
           
 
       </div>
+      
       </Link>
+      <Dialog 
+        open={toggleDialogBox}
+        onClose={()=>setToggleDialogBox(!toggleDialogBox)}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Voters
+        </DialogTitle>
+        <DialogContent>
+          {
+            voters?.map((voter)=>(
+              <User
+                key={voter.username}
+                name={voter.username}
+              />
+            ))
+          }
+        </DialogContent>
+        <DialogActions>
+          <Button  variant='contained' sx={{backgroundColor:'orange' ,"&:hover":{"backgroundColor":"rgb(255, 123, 0)"}}} onClick={()=>setToggleDialogBox(!toggleDialogBox)}>
+            Close
+          </Button>
+        </DialogActions>
 
-            {/* body */}
+      </Dialog>
 
 
-            {/* footer */}
 
 
 

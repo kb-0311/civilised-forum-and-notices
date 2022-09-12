@@ -6,7 +6,7 @@
 
 3. `GraphQL` -  Utilized to make the backend APIs fast, flexible, and developer-friendly by fetching only data fields necessary from multiple data sources, here in this case a remote deployed postgresQL Database. Used Query and Mutations in the graph server for CRUDifying the PostgresQL instance.
 
-4. `Apollo CLent` - Implemented Apollo Client to define,implement and utilize the server side graphQL Queries and Mutations. Implemenented in memory caching to opimize the entire User experience by making the time intensive DB round trip only when necessary.  
+4. `Apollo Client` - Implemented Apollo Client to define,implement and utilize the server side graphQL Queries and Mutations. Implemenented in memory caching to opimize the entire User experience by making the time intensive DB round trip only when necessary.  
 
 2. `NextAuth` - for implementing OAuth 2.0 Google Strategy.
 

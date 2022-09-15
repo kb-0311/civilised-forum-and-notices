@@ -147,4 +147,15 @@ export const GET_COMMENTS_BY_POST_ID = gql`
     }
   }
 `
+export const GET_POSTS_BY_TITLE_SEARCH = gql`
+  query MyQuery (
+    $title: String!,
+  ){
+    getPostUsingTitleAsAString(title: $title) {
+      username,
+      id,
+      title,
+    }
 
+  }
+`

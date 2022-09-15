@@ -157,6 +157,15 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+  getPostUsingTitleAsAString(title: String!) :[Post]
+    @dbquery (
+      type: "postgresql"
+      query: """
+        SELECT * FROM "post" where to_tsvector(title) @@ to_tsquery($1)
+      """
+      configuration: "postgresql_config"
+      
+    )
   getVoteList: [Vote]
     @dbquery(
       type: "postgresql"

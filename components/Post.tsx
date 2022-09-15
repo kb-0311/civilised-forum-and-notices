@@ -213,7 +213,7 @@ function Post({ post ,created_at }: Props) {
           }
         </DialogContent>
         <DialogActions>
-          <Button  variant='contained' sx={{backgroundColor:'orange' ,"&:hover":{"backgroundColor":"rgb(255, 123, 0)"}}} onClick={()=>setToggleDialogBox(!toggleDialogBox)}>
+          <Button variant='contained' sx={{backgroundColor:'orange' ,"&:hover":{"backgroundColor":"rgb(255, 123, 0)"}}} onClick={()=>setToggleDialogBox(!toggleDialogBox)}>
             Close
           </Button>
         </DialogActions>

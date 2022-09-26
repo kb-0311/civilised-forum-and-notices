@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { toast } from 'react-hot-toast';
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   ChevronDownIcon,
   HomeIcon,
@@ -33,9 +33,17 @@ import User from "./User";
 type SearchQuery= {
   postTitle:string
 }
+
+type SearchQueryResults = {
+  id:Number,
+  title:string,
+  username : string
+}
 function Header() {
 
   const { data: session } = useSession();
+
+  const [searchResults, setSearchResults] = useState<SearchQueryResults[]>();
 
   const [toggleSearch, setToggleSearch]= useState<boolean>(false);
   function PaperComponent(props: PaperProps) {
@@ -57,6 +65,15 @@ function Header() {
     formState: { errors },
   } = useForm<SearchQuery>()
 
+  const handleSubmitSearchResults = (getPostUsingTitleAsAString:any)=>{
+
+    setSearchResults(getPostUsingTitleAsAString);
+    console.log(searchResults);
+    setToggleSearch(!toggleSearch);
+    
+  } 
+  
+
   const submitSearchQuery = handleSubmit(async({postTitle})=>{
     try {
       const notification = toast.loading('Searching the post with the title..');
@@ -66,8 +83,10 @@ function Header() {
           title:postTitle
         },
       })
-      console.log(getPostUsingTitleAsAString);
       
+      handleSubmitSearchResults(getPostUsingTitleAsAString);
+      
+
       toast.success(`Here are the results -`, {
           id: notification,
           duration: 4000,
@@ -166,20 +185,26 @@ function Header() {
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Voters
+          Results
         </DialogTitle>
-        {/* <DialogContent>
+        <DialogContent>
           {
-            ?.map((voter)=>(
+            searchResults?.map((result)=>(
               <User
-                key={voter.username}
-                name={voter.username}
+                isResult={true}
+                key={result.username}
+                name={result.username}
+                resultDetails={{
+                  resultUsername:result.username,
+                  resultTitle :result.title,
+                  resultID :result.id
+                }}
               />
             ))
           }
-        </DialogContent> */}
+        </DialogContent>
         <DialogActions>
-          <Button variant='contained' sx={{backgroundColor:'orange' ,"&:hover":{"backgroundColor":"rgb(255, 123, 0)"}}} onClick={()=>setToggleSearch(!toggleSearch)}>
+          <Button variant='contained' auto-focus sx={{backgroundColor:"orangered", color:"orange" ,"&:hover":{"backgroundColor":"rgb(255, 123, 0)" , "color":"white"}}} onClick={()=>setToggleSearch(!toggleSearch)}>
             Close
           </Button>
         </DialogActions>

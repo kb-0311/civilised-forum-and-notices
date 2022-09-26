@@ -206,8 +206,10 @@ function Post({ post ,created_at }: Props) {
           {
             voters?.map((voter)=>(
               <User
+                isResult={false}
                 key={voter.username}
                 name={voter.username}
+                resultDetails={null}
               />
             ))
           }
